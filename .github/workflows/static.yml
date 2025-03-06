@@ -30,41 +30,35 @@ name: Build and Deploy to gh-pages
 on:
   push:
     branches:
-      - main # 监听 main 分支的 push 事件
+      - main
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest # 使用最新的 Ubuntu 环境
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. 检出代码
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. 设置 Node.js 环境（如果你的项目需要 Node.js）
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22 # 指定 Node.js 版本
+          node-version: 22
 
-      # 3. 安装依赖
       - name: Install dependencies
-        run: npm install # 如果是 npm 项目，使用 npm install
+        run: npm install
 
-      # 4. 编译代码
       - name: Build project
-        run: npm run build # 假设你的编译命令是 npm run build
+        run: npm run build
 
-      # 5. 配置 Git
       - name: Configure Git
         run: |
           git config --global user.name "MarkTang3611"
           git config --global user.email "marktang3611@qq.com"
 
-      # 6. 将编译后的文件部署到 gh-pages 分支
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.BLOG }} # 使用 GitHub Token
-          publish_dir: ./docs/.vitepress/dist # 假设编译后的文件在 dist 目录
-          force_orphan: true # 强制清空 gh-pages 分支的历史记录
+          github_token: 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
+          publish_dir: ./docs/.vitepress/dist
+          force_orphan: true
