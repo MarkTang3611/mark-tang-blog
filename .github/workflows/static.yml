@@ -49,11 +49,11 @@ jobs:
 
       # 3. 安装依赖
       - name: Install dependencies
-        run: pnpm i # 如果是 npm 项目，使用 npm install
+        run: npm install # 如果是 npm 项目，使用 npm install
 
       # 4. 编译代码
       - name: Build project
-        run: pnpm build # 假设你的编译命令是 npm run build
+        run: npm run build # 假设你的编译命令是 npm run build
 
       # 5. 将编译后的文件部署到 gh-pages 分支
       - name: Deploy to gh-pages
