@@ -55,7 +55,13 @@ jobs:
       - name: Build project
         run: npm run build # 假设你的编译命令是 npm run build
 
-      # 5. 将编译后的文件部署到 gh-pages 分支
+      # 5. 配置 Git
+      - name: Configure Git
+        run: |
+          git config --global user.name "MarkTang3611"
+          git config --global user.email "marktang3611@qq.com"
+
+      # 6. 将编译后的文件部署到 gh-pages 分支
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
