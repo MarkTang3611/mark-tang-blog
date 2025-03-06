@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'MarkTang的博客',
   description: '一个基于 VitePress 的个人博客',
+  base: '/mark-tang-blog/',
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
