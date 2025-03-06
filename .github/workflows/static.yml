@@ -22,5 +22,5 @@ jobs:
       - name: MarkTangBlog
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: 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
+          github_token: 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
           publish_dir: ./docs/.vitepress/dist
