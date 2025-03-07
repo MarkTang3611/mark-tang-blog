@@ -14,7 +14,10 @@ export default defineConfig({
     sidebar: [
       {
         text: 'electron',
-        items: [{ text: '使用electron+vue3+ts+vite搭建桌面端项目', link: '/posts/create-electron' }]
+        items: [
+          { text: '使用electron+vue3+ts+vite搭建桌面端项目', link: '/posts/create-electron' },
+          { text: '实现electron应用往windows注册表写注册项', link: '/posts/electron-registry' }
+        ]
       }
     ]
   }
