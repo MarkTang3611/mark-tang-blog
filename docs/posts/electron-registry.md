@@ -1,4 +1,4 @@
-实现electron应用往windows注册表写注册项，支持在web系统中使用`window.location.href='openApp://'`打开应用。
+> 实现electron应用往windows注册表写注册项，支持在web系统中使用`window.location.href='openApp://'`打开应用。
 
 # 版本
 
@@ -144,7 +144,7 @@ web系统使用`window.location.href='openApp://'`无法打开我们的electron�
 > 在第一种方式中，采用`regedit`添加注册项，如果要写在`HKEY_CLASSES_ROOT`中，需要应用获取管理员权限，如果用户没有管理员权限，会出现应用闪退的情况，为了解决闪退的情形，采用批处理方式来添加注册项。
 
 ## 添加注册项代码
-```javascript
+```typescript
 import { app, shell } from 'electron'
 import sudo from 'sudo-prompt'
 import path from 'path'
