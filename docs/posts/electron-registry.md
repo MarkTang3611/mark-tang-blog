@@ -6,12 +6,16 @@
 + vite：5.3.1
 + vue：3.4.30
 + regedit：5.1.3
++ sudo-prompt: 9.2.1
 
-# 代码
+# 1、采用regedit方式添加注册项
 
 ## 添加注册项代码
 
 ```typescript
+import { app } from 'electron'
+import regedit from 'regedit'
+
 export const addToRegistry = () => {
   console.log('注册自定义注册表openApp')
   // 获取应用程序路径
@@ -87,9 +91,9 @@ app.whenReady().then(() => {
 
 ```
 
-# 遇到的问题
+## 遇到的问题
 
-## 编译的安装包无法写注册项
+### 编译的安装包无法写注册项
 
 提示错误：`Error: Command failed: cscript.exe //Nologo D:\CodeLathe\Workspace\cl-fc-client\clouddrive2service\ui\dist_electron\win-unpacked\resources\app.asar\vbs\regList.wsf A HKCU\SOFTWARE`
 
@@ -115,7 +119,7 @@ import regedit from 'regedit'
 regedit.setExternalVBSLocation('./resources/vbs')
 ```
 
-## 注册项无法被使用
+### 注册项无法被使用
 
 控制台提示错误：`Failed to launch 'openApp://' because the scheme does not have a registered handler.`
 
@@ -135,4 +139,99 @@ web系统使用`window.location.href='openApp://'`无法打开我们的electron�
    }
 }
 ```
+
+# 2、采用批处理方式添加注册项
+> 在第一种方式中，采用`regedit`添加注册项，如果要写在`HKEY_CLASSES_ROOT`中，需要应用获取管理员权限，如果用户没有管理员权限，会出现应用闪退的情况，为了解决闪退的情形，采用批处理方式来添加注册项。
+
+## 添加注册项代码
+```javascript
+import { app, shell } from 'electron'
+import sudo from 'sudo-prompt'
+import path from 'path'
+import { exec } from 'child_process'
+
+/**
+ * 检查注册项是否存在
+ * @param {string} key - 注册表路径（例如：HKEY_CLASSES_ROOT\your_app_protocol）
+ * @returns {Promise<boolean>} - 返回 true 表示存在，false 表示不存在
+ */
+ const checkRegistryKeyExists = (key) => {
+  console.log(key)
+  return new Promise((resolve, reject) => {
+    exec(`reg query "${key}"`, (error, stdout, stderr) => {
+      if (error) {
+        // 如果注册项不存在，reg query 会返回错误
+        resolve(false)
+      } else {
+        // 如果注册项存在，stdout 会包含注册表信息
+        resolve(true)
+      }
+    })
+  })
+}
+
+// 往注册表添加注册项openApp
+const registerApp = async () => {
+  const has = await checkRegistryKeyExists(`HKEY_CLASSES_ROOT\\openApp\\shell\\open\\command`)
+  if (has) {
+    logger.log('注册项openApp已存在')
+    return
+  }
+  await sleep(3000)
+  // 获取应用路径
+  const appPath = app.getPath('exe')
+  // 批处理文件路径
+  let batFilePath
+  if (app.isPackaged) {
+    // 打包后使用 process.resourcesPath
+    batFilePath = path.join(process.resourcesPath, 'register_app.bat')
+  } else {
+    // 开发时使用相对路径
+    batFilePath = path.join(__dirname, '../../resources/register_app.bat')
+  }
+  const options = { name: 'InvisibleApp' }
+
+  logger.log('添加注册项openApp')
+  logger.log('batFilePath：', batFilePath)
+  logger.log('appPath', appPath)
+
+  const command = `"${batFilePath}" "${appPath}"`
+
+  sudo.exec(command, options, (error, stdout, stderr) => {
+    if (error) {
+      logger.error(`Error: ${error.message}`)
+      return
+    }
+    if (stderr) {
+      logger.error(`Stderr: ${stderr}`)
+      return
+    }
+    logger.log(`Stdout: ${stdout}`)
+  })
+}
+```
+
+## 执行脚本register_app.bat
+```bat
+@echo off
+setlocal enabledelayedexpansion
+
+:: 获取应用路径
+set APP_PATH=%~1
+
+echo add HKEY_CLASSES_ROOT.
+
+:: 添加注册表项
+reg add "HKEY_CLASSES_ROOT\openApp" /v "URL Protocol" /t REG_SZ /d "" /f
+
+echo Registration openApp.
+
+reg add "HKEY_CLASSES_ROOT\openApp\shell\open\command" /v "" /t REG_SZ /d "\"!APP_PATH!\" \"%%1\"" /f
+
+echo Registration shell\open\command.
+
+echo Successfully added openApp registry entry.
+```
+
+> 采用批处理添加注册项的好处就是，批处理就算执行出错，也不影响应用的启动，从而避免应用闪退的问题。
 
