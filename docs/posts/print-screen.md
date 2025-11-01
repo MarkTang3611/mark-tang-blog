@@ -71,6 +71,7 @@ return screenshot
 import puppeteer from 'puppeteer-core'
 import potrace from 'potrace'
 import pie from 'puppeteer-in-electron'
+import fs from 'fs'
 
 const main = async () => {
   await pie.initialize(app)
