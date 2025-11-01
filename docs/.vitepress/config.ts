@@ -30,7 +30,9 @@ export default defineConfig({
       },
       {
         text: '其他',
-        items: []
+        items: [
+          { text: 'vite工程的自动编译并上传测试环境', link: '/posts/deploy' },
+        ]
       }
     ]
   }
