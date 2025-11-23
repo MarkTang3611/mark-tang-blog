@@ -18,11 +18,16 @@ export default defineConfig({
     sidebar: [
       {
         text: 'Vue',
-        items: []
+        items: [
+          { text: '封装指令', link: '/posts/vue/postting-directives' },
+        ]
       },
       {
         text: '功能封装',
-        items: [{ text: '微信小程序 Api', link: '/posts/postting/wx-api' }]
+        items: [
+          { text: '微信小程序Api', link: '/posts/postting/wx-api' },
+          { text: 'web端Api', link: '/posts/postting/web-api' }
+        ]
       },
       {
         text: '组件封装',
@@ -31,8 +36,14 @@ export default defineConfig({
       {
         text: 'electron',
         items: [
-          { text: '使用electron+vue3+ts+vite搭建桌面端项目', link: '/posts/electron/create-electron' },
-          { text: '实现electron应用往windows注册表写注册项', link: '/posts/electron/electron-registry' },
+          {
+            text: '使用electron+vue3+ts+vite搭建桌面端项目',
+            link: '/posts/electron/create-electron'
+          },
+          {
+            text: '实现electron应用往windows注册表写注册项',
+            link: '/posts/electron/electron-registry'
+          },
           { text: '基于electron应用实现截图', link: '/posts/electron/print-screen' }
         ]
       },
