@@ -21,18 +21,24 @@ export default defineConfig({
         items: []
       },
       {
+        text: '功能封装',
+        items: [{ text: '微信小程序 Api', link: '/posts/postting/wx-api' }]
+      },
+      {
+        text: '组件封装',
+        items: [{ text: '上门取件时间选择组件', link: '/posts/components/visit-time' }]
+      },
+      {
         text: 'electron',
         items: [
-          { text: '使用electron+vue3+ts+vite搭建桌面端项目', link: '/posts/create-electron' },
-          { text: '实现electron应用往windows注册表写注册项', link: '/posts/electron-registry' },
-          { text: '基于electron应用实现截图', link: '/posts/print-screen' }
+          { text: '使用electron+vue3+ts+vite搭建桌面端项目', link: '/posts/electron/create-electron' },
+          { text: '实现electron应用往windows注册表写注册项', link: '/posts/electron/electron-registry' },
+          { text: '基于electron应用实现截图', link: '/posts/electron/print-screen' }
         ]
       },
       {
         text: '其他',
-        items: [
-          { text: 'vite工程的自动编译并上传测试环境', link: '/posts/deploy' },
-        ]
+        items: [{ text: 'vite工程的自动编译并上传测试环境', link: '/posts/other/deploy' }]
       }
     ]
   }
